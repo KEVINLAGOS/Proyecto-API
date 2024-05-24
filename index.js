@@ -28,7 +28,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(upload.single('archivo'));
 
 // Configuración de base de datos
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 const PORTE = process.env.MYSQLPORT;
 const HOST = process.env.MYSQLHOST || 'localhost';
 const USER = process.env.MYSQLUSER || 'root';
