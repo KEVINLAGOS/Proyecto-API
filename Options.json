@@ -1,9 +1,0 @@
-{
-    "openapi": "3.0.0",
-    "info": {
-    "title": "Proyecto-API",
-    "version": "1.0.0"
-    },
-    "servers":[
-    {"url": "https://proyecto-api-production-14f5.up.railway.app/api-docs"}]
-}
