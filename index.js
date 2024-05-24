@@ -91,6 +91,7 @@ app.get("/computadoras", async (req, res) => {
         res.json(rows);
     } catch (err) {
         res.status(500).json({ mensaje: err.sqlMessage });
+      
     }
 });
 

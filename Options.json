@@ -5,5 +5,5 @@
     "version": "1.0.0"
     },
     "servers":[
-    {"url": "https://proyecto-api-production-14f5.up.railway.app/"}]
+    {"url": "https://proyecto-api-production-14f5.up.railway.app/api-docs"}]
 }
