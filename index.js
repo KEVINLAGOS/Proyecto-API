@@ -30,10 +30,10 @@ app.use(upload.single('archivo'));
 // Configuración de base de datos
 const PORT = process.env.PORT || 3001;
 const PORTE = process.env.MYSQLPORT;
-const HOST = process.env.MYSQLHOST || 'localhost';
-const USER = process.env.MYSQLUSER || 'root';
-const PASSWORD = process.env.MYSQLPASSWORD || '17112001';
-const DATABASE = process.env.MYSQL_DATABASE || 'Computadoras';
+const HOST = process.env.MYSQLHOST ;
+const USER = process.env.MYSQLUSER ;
+const PASSWORD = process.env.MYSQLPASSWORD  ;
+const DATABASE = process.env.MYSQL_DATABASE ;
 
 const MySqlConnection = { host: HOST, user: USER, password: PASSWORD, database: DATABASE, port: PORTE };
 const data = fs.readFileSync(path.join(__dirname, './Options.json'), { encoding: 'utf8', flag: 'r' });
@@ -87,7 +87,7 @@ app.get("/computadoras", async (req, res) => {
     try {
         const token = req.token;
         const conn = await mysql.createConnection(MySqlConnection);
-        const [rows, fields] = await conn.query('SELECT * FROM Computadoras');
+        const [rows, fields] = await conn.query('SELECT * FROM railway.Computadoras');
         res.json(rows);
     } catch (err) {
         res.status(500).json({ mensaje: err.sqlMessage });
@@ -140,7 +140,7 @@ app.get("/computadoras", async (req, res) => {
 app.get("/computadoras/:id", async (req, res) => {
     try {
         const conn = await mysql.createConnection(MySqlConnection);
-        const [rows, fields] = await conn.query('SELECT * FROM Computadoras WHERE id = ?', [req.params.id]);
+        const [rows, fields] = await conn.query('SELECT * FROM railway.Computadoras WHERE id = ?', [req.params.id]);
         if (rows.length === 0) {
             res.status(404).json({ mensaje: "Computadora no encontrada" });
         } else {
