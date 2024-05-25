@@ -37,6 +37,7 @@ const obj = JSON.parse(data)
 
 const swaggerOptions = {
     definition: obj,
+    description: "Esta API proporciona endpoints para administrar un inventario de computadoras.",
     apis: [`${path.join(__dirname,"./Index.js")}`],
 }
 
