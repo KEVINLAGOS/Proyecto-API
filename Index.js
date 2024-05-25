@@ -1,56 +1,44 @@
-const express = require('express');
+const express=require('express');
 const morgan = require('morgan');
-const fs = require('fs');
-const path = require('path');
-const mysql = require('mysql2/promise');
-const bearerToken = require('express-bearer-token');
+const fs=require('fs');
+const path=require('path');
+const mysql =require('mysql2/promise');
+const bearerToken = require('express-bearer-token'); 
+const app=express();
 const cors = require('cors');
+var accessLogStream = fs.createWriteStream(path.join(__dirname,'access.log'),{flags:'a'});
 const swaggerUI = require('swagger-ui-express');
-const swaggerJsdoc = require('swagger-jsdoc');
-const multer = require('multer');
-
-const app = express();
-const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' });
-
-app.use(morgan('combined', { stream: accessLogStream }));
+const swaggerjsDoc= require('swagger-jsdoc');
+app.use(morgan('combined',{stream:accessLogStream}));
 app.use(cors());
 app.use(express.json());
 app.use(bearerToken());
-app.use(express.urlencoded({ extended: true }));
 
-const folder = path.join(__dirname, '/archivos/');
+const multer = require('multer');
+const folder = path.join(__dirname+'/archivos/');
 const storage = multer.diskStorage({
-    destination: function (req, file, cb) { cb(null, folder); },
-    filename: function (req, file, cb) { cb(null, file.originalname); }
+    destination : function(req,file,cb) {cb(null,folder)},
+    filename: function (req,file,cb) {cb(null,file.originalname)}
 });
-const upload = multer({ storage: storage });
+const upload = multer({storage:storage})
+app.use(express.urlencoded({extended:true}));
 app.use(upload.single('archivo'));
+const PORT = process.env.PORT || 8080
+const PORTE = process.env.MYSQLPORT ;
+const HOST = process.env.MYSQLHOST || 'localhost';
+const USER = process.env.MYSQLUSER || 'root';
+const PASSWORD = process.env.MYSQLPASSWORD || '';
+const DATABASE = process.env.MYSQL_DATABASE || 'Futbolista';
+const URL = process.env.URL
 
-const PORT = process.env.PORT || 3000;
-const MYSQLPORT = process.env.MYSQLPORT;
-const MYSQLHOST = process.env.MYSQLHOST || 'localhost';
-const MYSQLUSER = process.env.MYSQLUSER || 'root';
-const MYSQLPASSWORD = process.env.MYSQLPASSWORD || '';
-const MYSQLDATABASE = process.env.MYSQL_DATABASE || 'railway';
-const URL = process.env.URL;
-
-const MySqlConnection = { host: MYSQLHOST, user: MYSQLUSER, password: MYSQLPASSWORD, database: MYSQLDATABASE, port: MYSQLPORT };
-const data = fs.readFileSync(path.join(__dirname, './Options.json'), { encoding: 'utf8', flag: 'r' });
-const obj = JSON.parse(data);
+const MySqlConnection = {host : HOST, user : USER, password : PASSWORD, database: DATABASE,port : PORTE}
+const data = fs.readFileSync(path.join(__dirname,'./Options.json'),{ encoding: 'utf8', flag: 'r' });
+const obj = JSON.parse(data)
 
 const swaggerOptions = {
     definition: obj,
-    apis: [`${path.join(__dirname, "./Index.js")}`],
+    apis: [`${path.join(__dirname,"./index.js")}`],
 }
-
-const swaggerDocs = swaggerJsdoc(swaggerOptions);
-app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
-app.use("/api-docs-json", (req, res) => {
-    res.json(swaggerDocs);
-});
-app.get("/options", (req, res) => {
-    res.json(data);
-});
 
 /**
 * @swagger
@@ -294,7 +282,20 @@ app.delete("/computadora/:id", async (req, res) => {
         res.status(500).json({ mensaje: err.sqlMessage });
     }
 });
+const swaggerDocs = swaggerjsDoc(swaggerOptions);
 
-app.listen(PORT, () => {
-    console.log(`Servidor express escuchando en el puerto ${PORT}`);
+app.use("/api-docs",swaggerUI.serve,swaggerUI.setup(swaggerDocs));
+app.get("/options",(req,res)=>
+{
+    res.json(data)
+})
+
+app.use("/api-docs-json",(req,res)=>{
+    res.json(swaggerDocs);
+});
+
+
+
+app.listen(PORT,()=>{
+    console.log("Servidor express escuchando en el puerto "+PORT);
 });
