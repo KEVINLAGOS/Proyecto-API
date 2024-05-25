@@ -4,12 +4,12 @@ const fs = require('fs');
 const path = require('path');
 const mysql = require('mysql2/promise');
 const bearerToken = require('express-bearer-token');
-const app = express();
 const cors = require('cors');
 const swaggerUI = require('swagger-ui-express');
-const swaggerjsDoc = require('swagger-jsdoc');
+const swaggerJsdoc = require('swagger-jsdoc');
 const multer = require('multer');
 
+const app = express();
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' });
 
 app.use(morgan('combined', { stream: accessLogStream }));
@@ -43,7 +43,7 @@ const swaggerOptions = {
     apis: [`${path.join(__dirname, "./index.js")}`],
 }
 
-const swaggerDocs = swaggerjsDoc(swaggerOptions);
+const swaggerDocs = swaggerJsdoc(swaggerOptions);
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 app.use("/api-docs-json", (req, res) => {
     res.json(swaggerDocs);

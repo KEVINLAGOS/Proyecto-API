@@ -5,5 +5,5 @@
     "version": "1.0.0"
     },
     "servers":[
-    {"url": "https://apifutbolistas-production.up.railway.app/"}]
+    {"url": "https://proyecto-api-production-2c3e.up.railway.app/"}]
 }
