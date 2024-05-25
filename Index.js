@@ -23,7 +23,7 @@ const storage = multer.diskStorage({
 const upload = multer({storage:storage})
 app.use(express.urlencoded({extended:true}));
 app.use(upload.single('archivo'));
-const PORT = process.env.PORT || 8080
+const PORT = process.env.PORT || 3001
 const PORTE = process.env.MYSQLPORT ;
 const HOST = process.env.MYSQLHOST || 'localhost';
 const USER = process.env.MYSQLUSER || 'root';
@@ -39,97 +39,95 @@ const swaggerOptions = {
     definition: obj,
     apis: [`${path.join(__dirname,"./Index.js")}`],
 }
+
+/**
+ * @swagger
+ * tags:
+ *   name: Computadoras
+ *   description: Operaciones relacionadas con las computadoras
+ */
+
 /**
  * @swagger
  * /computadoras:
  *   get:
- *     summary: Obtener la lista de computadoras.
- *     description: Endpoint para obtener todas las computadoras de la base de datos.
+ *     summary: Obtener todas las computadoras
+ *     tags: [Computadoras]
  *     responses:
- *       200:
- *         description: OK. La solicitud fue exitosa.
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Computadora'
- *       500:
- *         description: Error interno del servidor.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 mensaje:
- *                   type: string
+ *       '200':
+ *         description: Lista de computadoras obtenida correctamente
+ *       '500':
+ *         description: Error del servidor al obtener la lista de computadoras
  */
-app.get("/computadoras", async (req, res) => {
+
+app.get("/computadoras", async(req, res) => {
     try {
         const conn = await mysql.createConnection(MySqlConnection);
-        const [rows, fields] = await conn.query('SELECT * from railway.Computadoras');
+        const [rows, fields] = await conn.query('SELECT * FROM Computadoras');
         res.json(rows);
     } catch (err) {
-        res.status(500).json({ mensaje: err.sqlMessage });
+        res.status(500).json({ message: err.sqlMessage });
     }
 });
 
 /**
  * @swagger
- * /insertar-computadora:
+ * /computadoras:
  *   post:
- *     summary: Insertar una nueva computadora.
- *     description: Endpoint para agregar una nueva computadora a la base de datos.
+ *     summary: Agregar una nueva computadora
+ *     tags: [Computadoras]
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/ComputadoraInput'
+ *             type: object
+ *             properties:
+ *               marca:
+ *                 type: string
+ *               modelo:
+ *                 type: string
+ *               procesador:
+ *                 type: string
+ *               ram_gb:
+ *                 type: integer
+ *               almacenamiento_gb:
+ *                 type: integer
+ *               tipo_almacenamiento:
+ *                 type: string
+ *                 enum: ['HDD', 'SSD']
+ *               sistema_operativo:
+ *                 type: string
  *     responses:
- *       200:
- *         description: OK. La solicitud fue exitosa.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *       500:
- *         description: Error interno del servidor.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
+ *       '200':
+ *         description: Computadora agregada correctamente
+ *       '500':
+ *         description: Error del servidor al agregar la computadora
  */
 
-app.post('/insertar-computadora', async (req, res) => {
+app.post('/computadoras', async(req, res) => {
     try {
         const conn = await mysql.createConnection(MySqlConnection);
         const { marca, modelo, procesador, ram_gb, almacenamiento_gb, tipo_almacenamiento, sistema_operativo } = req.body;
-        const [rows, fields] = await conn.execute('INSERT INTO railway.Computadoras (marca, modelo, procesador, ram_gb, almacenamiento_gb, tipo_almacenamiento, sistema_operativo) VALUES (?, ?, ?, ?, ?, ?, ?)', [marca, modelo, procesador, ram_gb, almacenamiento_gb, tipo_almacenamiento, sistema_operativo]);
-        res.json({ message: 'Datos insertados correctamente para la computadora' });
+        await conn.execute('INSERT INTO Computadoras (marca, modelo, procesador, ram_gb, almacenamiento_gb, tipo_almacenamiento, sistema_operativo) VALUES (?, ?, ?, ?, ?, ?, ?)', [marca, modelo, procesador, ram_gb, almacenamiento_gb, tipo_almacenamiento, sistema_operativo]);
+        res.json({ message: 'Computadora agregada correctamente' });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Error al insertar datos' });
+        res.status(500).json({ message: 'Error al agregar la computadora' });
     }
 });
 
 /**
  * @swagger
- * /actualizar-computadora/{id}:
+ * /computadoras/{id}:
  *   put:
- *     summary: Actualizar información de una computadora.
- *     description: Endpoint para actualizar la información de una computadora en la base de datos.
+ *     summary: Actualizar una computadora existente
+ *     tags: [Computadoras]
  *     parameters:
  *       - in: path
  *         name: id
- *         description: ID de la computadora a actualizar.
  *         required: true
+ *         description: ID de la computadora a actualizar
  *         schema:
  *           type: integer
  *     requestBody:
@@ -137,95 +135,108 @@ app.post('/insertar-computadora', async (req, res) => {
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/ComputadoraInput'
+ *             type: object
+ *             properties:
+ *               marca:
+ *                 type: string
+ *               modelo:
+ *                 type: string
+ *               procesador:
+ *                 type: string
+ *               ram_gb:
+ *                 type: integer
+ *               almacenamiento_gb:
+ *                 type: integer
+ *               tipo_almacenamiento:
+ *                 type: string
+ *                 enum: ['HDD', 'SSD']
+ *               sistema_operativo:
+ *                 type: string
  *     responses:
- *       200:
- *         description: OK. La solicitud fue exitosa.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 mensaje:
- *                   type: string
- *       500:
- *         description: Error interno del servidor.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 mensaje:
- *                   type: string
+ *       '200':
+ *         description: Computadora actualizada correctamente
+ *       '404':
+ *         description: Computadora no encontrada
+ *       '500':
+ *         description: Error del servidor al actualizar la computadora
  */
 
-app.put("/actualizar-computadora/:id", async (req, res) => {
+app.put("/computadoras/:id", async(req, res) => {
+    const id = req.params.id;
+    const { marca, modelo, procesador, ram_gb, almacenamiento_gb, tipo_almacenamiento, sistema_operativo } = req.body;
+
     try {
         const conn = await mysql.createConnection(MySqlConnection);
-        const { marca, modelo, procesador, ram_gb, almacenamiento_gb, tipo_almacenamiento, sistema_operativo } = req.body;
-        await conn.query('UPDATE railway.Computadoras SET marca = ?, modelo = ?, procesador = ?, ram_gb = ?, almacenamiento_gb = ?, tipo_almacenamiento = ?, sistema_operativo = ? WHERE id = ?', [marca, modelo, procesador, ram_gb, almacenamiento_gb, tipo_almacenamiento, sistema_operativo, req.params.id]);
-        res.json({ mensaje: "Computadora actualizada correctamente" });
-    } catch (err) {
-        res.status(500).json({ mensaje: err.sqlMessage });
+        const [result] = await conn.execute('UPDATE Computadoras SET marca = ?, modelo = ?, procesador = ?, ram_gb = ?, almacenamiento_gb = ?, tipo_almacenamiento = ?, sistema_operativo = ? WHERE id = ?', [marca, modelo, procesador, ram_gb, almacenamiento_gb, tipo_almacenamiento, sistema_operativo, id]);
+
+        if (result.affectedRows === 0) {
+            res.status(404).json({ message: 'Computadora no encontrada' });
+            return;
+        }
+
+        res.json({ message: 'Computadora actualizada correctamente' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error al actualizar la computadora' });
     }
 });
 
 /**
  * @swagger
- * /eliminar-computadora/{id}:
+ * /computadoras/{id}:
  *   delete:
- *     summary: Eliminar una computadora.
- *     description: Endpoint para eliminar una computadora de la base de datos.
+ *     summary: Eliminar una computadora existente
+ *     tags: [Computadoras]
  *     parameters:
  *       - in: path
  *         name: id
- *         description: ID de la computadora a eliminar.
  *         required: true
+ *         description: ID de la computadora a eliminar
  *         schema:
  *           type: integer
  *     responses:
- *       200:
- *         description: OK. La solicitud fue exitosa.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 mensaje:
- *                   type: string
- *       404:
- *         description: No encontrado. La computadora con el ID especificado no existe.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 mensaje:
- *                   type: string
- *       500:
- *         description: Error interno del servidor.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 mensaje:
- *                   type: string
+ *       '200':
+ *         description: Computadora eliminada correctamente
+ *       '404':
+ *         description: Computadora no encontrada
+ *       '500':
+ *         description: Error del servidor al eliminar la computadora
  */
-app.delete("/eliminar-computadora/:id", async (req, res) => {
+
+app.delete("/computadoras/:id", async(req, res) => {
+    const id = req.params.id;
+
     try {
         const conn = await mysql.createConnection(MySqlConnection);
-        const [rows, fields] = await conn.query('DELETE FROM railway.Computadoras WHERE id = ?', [req.params.id]);
-        if (rows.affectedRows == 0) {
-            res.status(404).json({ mensaje: "No se encontró ninguna computadora para eliminar" });
-        } else {
-            res.json({ mensaje: "Computadora eliminada correctamente" });
+        const [result] = await conn.execute('DELETE FROM Computadoras WHERE id = ?', [id]);
+
+        if (result.affectedRows === 0) {
+            res.status(404).json({ message: 'Computadora no encontrada' });
+            return;
         }
-    } catch (err) {
-        res.status(500).json({ mensaje: err.sqlMessage });
+
+        res.json({ message: 'Computadora eliminada correctamente' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error al eliminar la computadora' });
     }
 });
 
-app.listen(PORT, () => {
-    console.log("Servidor express escuchando en el puerto " + PORT);
+
+const swaggerDocs = swaggerjsDoc(swaggerOptions);
+
+app.use("/api-docs",swaggerUI.serve,swaggerUI.setup(swaggerDocs));
+app.get("/options",(req,res)=>
+{
+    res.json(data)
+})
+
+app.use("/api-docs-json",(req,res)=>{
+    res.json(swaggerDocs);
+});
+
+
+
+app.listen(PORT,()=>{
+    console.log("Servidor express escuchando en el puerto "+PORT);
 });
