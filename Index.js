@@ -37,7 +37,7 @@ const obj = JSON.parse(data)
 
 const swaggerOptions = {
     definition: obj,
-    apis: [`${path.join(__dirname,"./index.js")}`],
+    apis: [`${path.join(__dirname,"./Index.js")}`],
 }
 
 /**
