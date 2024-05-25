@@ -27,7 +27,7 @@ const PORT = process.env.PORT || 3001
 const PORTE = process.env.MYSQLPORT ;
 const HOST = process.env.MYSQLHOST || 'localhost';
 const USER = process.env.MYSQLUSER || 'root';
-const PASSWORD = process.env.MYSQLPASSWORD || '';
+const PASSWORD = process.env.MYSQLPASSWORD || '17112001';
 const DATABASE = process.env.MYSQL_DATABASE || 'railway';
 const URL = process.env.URL
 
@@ -64,7 +64,7 @@ const swaggerOptions = {
 app.get("/computadoras", async(req, res) => {
     try {
         const conn = await mysql.createConnection(MySqlConnection);
-        const [rows, fields] = await conn.query('SELECT * FROM Computadoras');
+        const [rows, fields] = await conn.query('SELECT * FROM railway.computadoras');
         res.json(rows);
     } catch (err) {
         res.status(500).json({ message: err.sqlMessage });
@@ -110,7 +110,7 @@ app.post('/computadoras', async(req, res) => {
     try {
         const conn = await mysql.createConnection(MySqlConnection);
         const { marca, modelo, procesador, ram_gb, almacenamiento_gb, tipo_almacenamiento, sistema_operativo } = req.body;
-        await conn.execute('INSERT INTO Computadoras (marca, modelo, procesador, ram_gb, almacenamiento_gb, tipo_almacenamiento, sistema_operativo) VALUES (?, ?, ?, ?, ?, ?, ?)', [marca, modelo, procesador, ram_gb, almacenamiento_gb, tipo_almacenamiento, sistema_operativo]);
+        await conn.execute('INSERT INTO railway.computadoras (marca, modelo, procesador, ram_gb, almacenamiento_gb, tipo_almacenamiento, sistema_operativo) VALUES (?, ?, ?, ?, ?, ?, ?)', [marca, modelo, procesador, ram_gb, almacenamiento_gb, tipo_almacenamiento, sistema_operativo]);
         res.json({ message: 'Computadora agregada correctamente' });
     } catch (error) {
         console.error(error);
@@ -168,7 +168,7 @@ app.put("/computadoras/:id", async(req, res) => {
 
     try {
         const conn = await mysql.createConnection(MySqlConnection);
-        const [result] = await conn.execute('UPDATE Computadoras SET marca = ?, modelo = ?, procesador = ?, ram_gb = ?, almacenamiento_gb = ?, tipo_almacenamiento = ?, sistema_operativo = ? WHERE id = ?', [marca, modelo, procesador, ram_gb, almacenamiento_gb, tipo_almacenamiento, sistema_operativo, id]);
+        const [result] = await conn.execute('UPDATE railway.computadoras SET marca = ?, modelo = ?, procesador = ?, ram_gb = ?, almacenamiento_gb = ?, tipo_almacenamiento = ?, sistema_operativo = ? WHERE id = ?', [marca, modelo, procesador, ram_gb, almacenamiento_gb, tipo_almacenamiento, sistema_operativo, id]);
 
         if (result.affectedRows === 0) {
             res.status(404).json({ message: 'Computadora no encontrada' });
@@ -209,7 +209,7 @@ app.delete("/computadoras/:id", async(req, res) => {
 
     try {
         const conn = await mysql.createConnection(MySqlConnection);
-        const [result] = await conn.execute('DELETE FROM Computadoras WHERE id = ?', [id]);
+        const [result] = await conn.execute('DELETE FROM railway.computadoras WHERE id = ?', [id]);
 
         if (result.affectedRows === 0) {
             res.status(404).json({ message: 'Computadora no encontrada' });
