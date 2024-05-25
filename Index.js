@@ -28,11 +28,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(upload.single('archivo'));
 
 // Variables de entorno
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 3000;
 const PORTE = process.env.MYSQLPORT;
 const HOST = process.env.MYSQLHOST || 'localhost';
 const USER = process.env.MYSQLUSER || 'root';
-const PASSWORD = process.env.MYSQLPASSWORD || '';
+const PASSWORD = process.env.MYSQLPASSWORD || '17112001';
 const DATABASE = process.env.MYSQL_DATABASE || 'railway';
 const URL = process.env.URL;
 
