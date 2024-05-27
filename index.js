@@ -43,28 +43,26 @@ const swaggerOptions = {
 };
 /**
  * @swagger
- * /computadoras:
+ * /usuarios:
  *   get:
- *     summary: Obtiene la lista de computadoras.
- *     description: Retorna la lista completa de computadoras almacenadas en la base de datos.
+ *     summary: Obtiene la lista de usuarios.
+ *     description: Retorna la lista completa de usuarios almacenados en la base de datos.
  *     tags:
- *       - Computadoras
+ *       - Usuarios
  *     security:
  *       - BearerAuth: []
  *     responses:
  *       200:
- *         description: Éxito. Retorna la lista de computadoras.
+ *         description: Éxito. Retorna la lista de usuarios.
  *         content:
  *           application/json:
  *             example:
  *               - id: 1
- *                 marca: Dell
- *                 modelo: XPS 13
- *                 procesador: Intel Core i7
- *                 ram_gb: 16
- *                 almacenamiento_gb: 512
- *                 tipo_almacenamiento: SSD
- *                 sistema_operativo: Windows 10
+ *                 nombre: Usuario1
+ *                 email: usuario1@example.com
+ *               - id: 2
+ *                 nombre: Usuario2
+ *                 email: usuario2@example.com
  *       500:
  *         description: Error interno del servidor.
  *         content:
@@ -84,48 +82,6 @@ app.get("/computadoras", async (req, res) => {
         res.status(500).json({ mensaje: err.sqlMessage });
     }
 });
-/**
- * @swagger
- * /computadoras/{id}:
- *   get:
- *     summary: Obtiene una computadora por ID.
- *     description: Retorna los detalles de una computadora específica según el ID proporcionado.
- *     tags:
- *       - Computadoras
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         description: ID de la computadora a consultar.
- *         schema:
- *           type: integer
- *     responses:
- *       200:
- *         description: Éxito. Retorna los detalles de la computadora.
- *         content:
- *           application/json:
- *             example:
- *               id: 1
- *               marca: Dell
- *               modelo: XPS 13
- *               procesador: Intel Core i7
- *               ram_gb: 16
- *               almacenamiento_gb: 512
- *               tipo_almacenamiento: SSD
- *               sistema_operativo: Windows 10
- *       404:
- *         description: No encontrado. La computadora con el ID proporcionado no existe.
- *         content:
- *           application/json:
- *             example:
- *               mensaje: Computadora no existe.
- *       500:
- *         description: Error interno del servidor.
- *         content:
- *           application/json:
- *             example:
- *               mensaje: Error en la base de datos.
- */
 app.get("/computadoras/:id", async (req, res) => {
     console.log(req.params.id);
     try {
@@ -140,40 +96,6 @@ app.get("/computadoras/:id", async (req, res) => {
         res.status(500).json({ mensaje: err.sqlMessage });
     }
 });
-/**
- * @swagger
- * /insertar:
- *   post:
- *     summary: Inserta una nueva computadora.
- *     description: Inserta una nueva computadora en la base de datos con la información proporcionada.
- *     tags:
- *       - Computadoras
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           example:
- *             marca: Dell
- *             modelo: XPS 13
- *             procesador: Intel Core i7
- *             ram_gb: 16
- *             almacenamiento_gb: 512
- *             tipo_almacenamiento: SSD
- *             sistema_operativo: Windows 10
- *     responses:
- *       200:
- *         description: Éxito. Datos insertados correctamente.
- *         content:
- *           application/json:
- *             example:
- *               message: Datos insertados correctamente.
- *       500:
- *         description: Error interno del servidor.
- *         content:
- *           application/json:
- *             example:
- *               message: Error al insertar datos.
- */
 app.post('/insertar', async (req, res) => {
     try {
         const conn = await mysql.createConnection(MySqlConnection);
@@ -191,47 +113,6 @@ app.post('/insertar', async (req, res) => {
         res.status(500).json({ message: 'Error al insertar datos' });
     }
 });
-/**
- * @swagger
- * /computadoras/{id}:
- *   put:
- *     summary: Actualiza una computadora por ID.
- *     description: Actualiza la información de una computadora específica según el ID proporcionado.
- *     tags:
- *       - Computadoras
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         description: ID de la computadora a actualizar.
- *         schema:
- *           type: integer
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           example:
- *             marca: Dell
- *             modelo: XPS 13
- *             procesador: Intel Core i7
- *             ram_gb: 16
- *             almacenamiento_gb: 512
- *             tipo_almacenamiento: SSD
- *             sistema_operativo: Windows 10
- *     responses:
- *       200:
- *         description: Éxito. Computadora actualizada correctamente.
- *         content:
- *           application/json:
- *             example:
- *               mensaje: ACTUALIZADO
- *       500:
- *         description: Error interno del servidor.
- *         content:
- *           application/json:
- *             example:
- *               mensaje: Error en la base de datos.
- */
 app.put("/computadoras/:id", async (req, res) => {
     try {
         const conn = await mysql.createConnection(MySqlConnection);
@@ -246,35 +127,6 @@ app.put("/computadoras/:id", async (req, res) => {
         res.status(500).json({ mensaje: err.sqlMessage });
     }
 });
-/**
- * @swagger
- * /computadoras/{id}:
- *   delete:
- *     summary: Elimina una computadora por ID.
- *     description: Elimina una computadora específica de la base de datos según el ID proporcionado.
- *     tags:
- *       - Computadoras
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         description: ID de la computadora a eliminar.
- *         schema:
- *           type: integer
- *     responses:
- *       200:
- *         description: Éxito. Computadora eliminada correctamente.
- *         content:
- *           application/json:
- *             example:
- *               mensaje: Registro Eliminado
- *       500:
- *         description: Error interno del servidor.
- *         content:
- *           application/json:
- *             example:
- *               mensaje: Error en la base de datos.
- */
 app.delete("/computadoras/:id", async (req, res) => {
     try {
         const conn = await mysql.createConnection(MySqlConnection);
