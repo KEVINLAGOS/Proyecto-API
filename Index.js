@@ -209,7 +209,7 @@ app.delete("/computadoras/:id", async(req, res) => {
 
     try {
         const conn = await mysql.createConnection(MySqlConnection);
-        const [result] = await conn.execute('DELETE FROM railway.computadoras WHERE id = ?', [id]);
+        const [result] = await conn.execute('DELETE FROM railway.Computadoras WHERE id = ?', [id]);
 
         if (result.affectedRows === 0) {
             res.status(404).json({ message: 'Computadora no encontrada' });
