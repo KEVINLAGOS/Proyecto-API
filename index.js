@@ -41,35 +41,7 @@ const swaggerOptions = {
     definition: obj,
     apis: [`${path.join(__dirname, "./index.js")}`],
 };
-/**
- * @swagger
- * /usuarios:
- *   get:
- *     summary: Obtiene la lista de usuarios.
- *     description: Retorna la lista completa de usuarios almacenados en la base de datos.
- *     tags:
- *       - Usuarios
- *     security:
- *       - BearerAuth: []
- *     responses:
- *       200:
- *         description: Éxito. Retorna la lista de usuarios.
- *         content:
- *           application/json:
- *             example:
- *               - id: 1
- *                 nombre: Usuario1
- *                 email: usuario1@example.com
- *               - id: 2
- *                 nombre: Usuario2
- *                 email: usuario2@example.com
- *       500:
- *         description: Error interno del servidor.
- *         content:
- *           application/json:
- *             example:
- *               mensaje: Error en la base de datos.
- */
+
 app.get("/computadoras", async (req, res) => {
     try {
         const token = req.token;
