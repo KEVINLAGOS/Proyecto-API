@@ -41,7 +41,6 @@ const swaggerOptions = {
     definition: obj,
     apis: [`${path.join(__dirname, "./Index.js")}`],
 };
-
 /**
  * @swagger
  * /computadoras:
@@ -85,7 +84,6 @@ app.get("/computadoras", async (req, res) => {
         res.status(500).json({ mensaje: err.sqlMessage });
     }
 });
-
 /**
  * @swagger
  * /computadoras/{id}:
@@ -142,7 +140,6 @@ app.get("/computadoras/:id", async (req, res) => {
         res.status(500).json({ mensaje: err.sqlMessage });
     }
 });
-
 /**
  * @swagger
  * /insertar:
@@ -194,7 +191,6 @@ app.post('/insertar', async (req, res) => {
         res.status(500).json({ message: 'Error al insertar datos' });
     }
 });
-
 /**
  * @swagger
  * /computadoras/{id}:
@@ -250,7 +246,6 @@ app.put("/computadoras/:id", async (req, res) => {
         res.status(500).json({ mensaje: err.sqlMessage });
     }
 });
-
 /**
  * @swagger
  * /computadoras/{id}:
