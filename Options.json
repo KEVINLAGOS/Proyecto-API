@@ -2,8 +2,7 @@
     "openapi": "3.0.0",
     "info": {
     "title": "API-Computadoras",
-    "version": "1.0.0",
-    "build": "node index.js"
+    "version": "1.0.0"
     },
     "servers":[
     {
