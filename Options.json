@@ -2,8 +2,8 @@
     "openapi": "3.0.0",
     "info": {
     "title": "Proyecto-API",
-    "description":"Probando",
-    "version": "1.0.0"
+    "version": "1.0.0",
+    "description":"Esta api sirver para consultar,eliminar,editar,modificar un inventario de computadoras lo cual es proporcionado por la base de datos de inventario de computadoras el cual estan en la pagina de railway la base de datos tanto como el proyecto."
     },
     "servers":[
     {
