@@ -5,8 +5,10 @@
     "main": "index.js",
     "scripts": {
       "start": "node index.js",
-      "test": "echo \"Error: no test specified\" && exit 1"
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "build": "echo \"No build steps necessary\""
     },
+    
     "dependencies": {
       "cors": "^2.8.5",
       "express": "^4.19.2",
