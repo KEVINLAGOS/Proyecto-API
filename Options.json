@@ -1,13 +1,10 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "Inventario Computadoras",
-        "description": "Esta API proporciona endpoints para administrar un inventario de computadoras.",
-        "version": "1.0.0"
+    "title": "API-Computadoras",
+    "version": "1.0.0"
     },
-    "servers": [
-        {
-            "url": "https://proyecto-api-production-2c3e.up.railway.app/"
-        }
-    ]
+    "servers":[
+    {
+    "url":"http://localhost:3000"}]
 }
