@@ -43,6 +43,54 @@ const swaggerOptions = {
 };
 /**
  * @swagger
+ * tags:
+ *   name: Computadoras
+ *   description: Operaciones relacionadas con computadoras
+ *
+ * components:
+ *   schemas:
+ *     Computadora:
+ *       type: object
+ *       required:
+ *         - marca
+ *         - modelo
+ *         - procesador
+ *         - ram_gb
+ *         - almacenamiento_gb
+ *         - tipo_almacenamiento
+ *         - sistema_operativo
+ *       properties:
+ *         id:
+ *           type: integer
+ *           description: ID único generado automáticamente para la computadora
+ *         marca:
+ *           type: string
+ *           description: Marca de la computadora
+ *         modelo:
+ *           type: string
+ *           description: Modelo de la computadora
+ *         procesador:
+ *           type: string
+ *           description: Procesador de la computadora
+ *         ram_gb:
+ *           type: integer
+ *           description: Cantidad de RAM en GB
+ *         almacenamiento_gb:
+ *           type: integer
+ *           description: Capacidad de almacenamiento en GB
+ *         tipo_almacenamiento:
+ *           type: string
+ *           enum:
+ *             - HDD
+ *             - SSD
+ *           description: Tipo de almacenamiento de la computadora
+ *         sistema_operativo:
+ *           type: string
+ *           description: Sistema operativo de la computadora
+ */
+
+/**
+ * @swagger
  * /computadoras:
  *   get:
  *     summary: Obtiene la lista de computadoras.
